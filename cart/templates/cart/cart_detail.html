@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Cart{% endblock %}
+
+
+{% block content %}
+
+<div>
+    {% for item in cart_items %}
+        <div>
+            <h2>{{ item.product.name }}</h2>
+            {% comment %} <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="image-placeholder"> {% endcomment %}
+            <p>Price: {{ item.product.price }}</p>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Total: {{ item.total_price }}</p>
+            <a href="{% url 'cart:remove_from_cart' item.id %}">Remove</a>
+        </div>
+    {% endfor %}
+    <h2>Total Amount: {{ total_price }}</h2>
+    <form method="post" action="#">
+        {% csrf_token %}
+        <button type="submit">Checkout</button>
+    </form>
+
+</div>
+
+{% endblock %}

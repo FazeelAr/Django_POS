@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Product</title>
+  <link rel="icon" href="https://www.freeiconspng.com/uploads/green-shopping-cart-icon-5.png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      width: 370px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input, textarea, select {
+      width: 94%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .back {
+      background-color: #eee;
+    }
+
+    .save {
+      background-color: #2d4ddf;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Add Product</h2>
+    <form enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      
+      <label>Product Name</label>
+      <input type="text" placeholder="Product name" name="name" required>
+
+      <label>Price</label>
+      <input type="text" placeholder="Price" name="price" required>
+
+      <label>Description</label>
+      <textarea rows="3" placeholder="Description" name="description" required></textarea>
+
+      <label>Quantity</label>
+      <input type="number" placeholder="Quantity" name="stock" required>
+
+      <label>Category</label>
+      <select name="category" required>
+        <option value="">-- Select Category --</option>
+        {% for category in categories %}
+          <option value="{{ category.id }}">{{ category.name }}</option>
+        {% endfor %}
+      </select>
+
+      <label>Product Image</label>
+      <input type="file" name="image" accept="image/*" required>
+
+      <div class="buttons">
+        <button type="button" class="back" onclick="window.history.back()">Back</button>
+        <button type="submit" class="save">Save</button>
+      </div>
+    </form>
+  </div>
+
+</body>
+</html>

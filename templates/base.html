@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}POS{% endblock %}</title>
+    <link rel="icon" href="https://www.freeiconspng.com/uploads/green-shopping-cart-icon-5.png">
+    <style>
+        body {
+            margin: 5px;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+
+        .bar {
+            position: fixed; 
+            top: 0;           
+            left: 0;          
+            background-color: rgb(93, 93, 246);
+            height: 100vh; 
+            width: 200px;  
+            padding: 20px;
+            border-top-right-radius: 20px;
+            border-end-end-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pos {
+            color: white;
+        }
+
+        .menu {
+            font-size: 15px;
+            background-color: rgb(93, 93, 246);
+            border: none;
+            padding: 5px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin: 5px 0;
+        }
+
+        .menu:active, .menu:hover {
+            background-color: rgb(179, 179, 234);
+        }
+
+        .bar a {
+            text-decoration: none;
+            color: white;
+        }
+        
+        .bar a:hover {
+            color: black;
+        }
+
+        .main-content {
+            margin-left: 220px; /* sidebar width + some spacing */
+            padding: 30px;
+            flex: 1;
+            background-color: #f9f9f9;
+            min-height: 100vh;
+        }
+    </style>
+    {% endblock %}
+</head>
+<body>
+    <div class="bar">
+        <div>
+            <a href="/"><h1 class="pos">POS</h1></a>
+            <a class="menu" href="#">
+                <img src="https://www.pngkey.com/png/full/335-3354790_dashboard-reporting-dashboard-icon.png" width="20" height="20">
+                <p>Dashboard</p>
+            </a>
+            <a class="menu" href="{% url 'product:product_list' %}">
+                <img src="https://www.freeiconspng.com/uploads/production-icon-21.png" width="20" height="20">
+                <p>Product</p>
+            </a>
+            <a class="menu" href="#">
+                <img src="https://icons.veryicon.com/png/o/miscellaneous/h5-general-system-icon/orders-5.png" width="20" height="20">
+                <p>Order</p>
+            </a>
+            <a class="menu" href="{% url 'cart:cart_detail' %}">
+                <img src="https://static.vecteezy.com/system/resources/previews/019/787/018/original/shopping-cart-icon-shopping-basket-on-transparent-background-free-png.png" width="30" height="20">
+                <p>Cart</p>
+            </a>
+        </div>
+        <form method="post" action="logout/">
+        {% csrf_token %}
+        <button class="menu" type="submit" name="logout" style="margin-bottom: 30px; width: 200px;">
+            <img src="https://cdn1.iconfinder.com/data/icons/heroicons-ui/24/logout-512.png" width="20" height="20">
+            <p>Logout</p>
+        </button>
+        </form>
+    </div>
+
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
