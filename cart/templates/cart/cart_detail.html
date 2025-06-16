@@ -2,26 +2,161 @@
 
 {% block title %}Cart{% endblock %}
 
-
 {% block content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff;
+    padding: 30px;
+  }
 
-<div>
+  .cart-container {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cart-box {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .cart-item:last-child {
+    border-bottom: none;
+  }
+
+  .image {
+    width: 60px;
+    height: 60px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    margin-right: 15px;
+    object-fit: cover;
+  }
+
+  .info {
+    flex: 1;
+  }
+
+  .name {
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .price {
+    margin: 5px 0;
+  }
+
+  .status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+  }
+
+  .in-stock {
+    background: #d4f3d4;
+    color: #256029;
+  }
+
+  .out-of-stock {
+    background: #f8d3d3;
+    color: #892222;
+  }
+
+  .quantity {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin: 0 15px;
+  }
+
+  .quantity input {
+    width: 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px;
+  }
+
+  .subtotal {
+    width: 80px;
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .delete {
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .total {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .checkout-btn {
+    background: #2d4ddf;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    float: right;
+  }
+</style>
+
+<div class="cart-container">
+  <h1>Cart</h1>
+  <div class="cart-box">
+
     {% for item in cart_items %}
-        <div>
-            <h2>{{ item.product.name }}</h2>
-            {% comment %} <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="image-placeholder"> {% endcomment %}
-            <p>Price: {{ item.product.price }}</p>
-            <p>Quantity: {{ item.quantity }}</p>
-            <p>Total: {{ item.total_price }}</p>
-            <a href="{% url 'cart:remove_from_cart' item.id %}">Remove</a>
+      <div class="cart-item">
+        {% if item.product.image %}
+          <img src="{{ item.product.image.url }}" class="image" alt="{{ item.product.name }}">
+        {% else %}
+          <div class="image"></div>
+        {% endif %}
+        <div class="info">
+          <p class="name">{{ item.product.name }}</p>
+          <p class="price">Price: ${{ item.product.price }}</p>
+          <span class="status {% if item.product.stock > 0 %}in-stock{% else %}out-of-stock{% endif %}">
+            {% if item.product.stock > 0 %}In Stock{% else %}Out of Stock{% endif %}
+          </span>
         </div>
+        <form method="post" action="{% url 'cart:update_quantity' item.id %}" class="quantity">
+          {% csrf_token %}
+          <input type="number" name="quantity" value="{{ item.quantity }}" min="1" onchange="this.form.submit()">
+        </form>
+        <div class="subtotal">${{ item.total_price }}</div>
+        <a href="{% url 'cart:remove_from_cart' item.id %}" class="delete">🗑️</a>
+      </div>
+    {% empty %}
+      <p>Your cart is empty.</p>
     {% endfor %}
-    <h2>Total Amount: {{ total_price }}</h2>
-    <form method="post" action="#">
+
+    {% if cart_items %}
+      <div class="total">
+        <span>Total</span>
+        <span class="total-price">${{ total_price }}</span>
+      </div>
+
+      <form method="post" action="{% url 'order:create_order'  %}">
         {% csrf_token %}
-        <button type="submit">Checkout</button>
-    </form>
-
+        <button type="submit" class="checkout-btn">Checkout</button>
+      </form>
+    {% endif %}
+  </div>
 </div>
-
 {% endblock %}

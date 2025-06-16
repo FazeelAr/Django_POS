@@ -72,7 +72,7 @@
     <div class="bar">
         <div>
             <a href="/"><h1 class="pos">POS</h1></a>
-            <a class="menu" href="#">
+            <a class="menu" href="{% url 'dashboard:dashboard_home' %}">
                 <img src="https://www.pngkey.com/png/full/335-3354790_dashboard-reporting-dashboard-icon.png" width="20" height="20">
                 <p>Dashboard</p>
             </a>
@@ -80,7 +80,7 @@
                 <img src="https://www.freeiconspng.com/uploads/production-icon-21.png" width="20" height="20">
                 <p>Product</p>
             </a>
-            <a class="menu" href="#">
+            <a class="menu" href="{% url 'order:order_list' %}">
                 <img src="https://icons.veryicon.com/png/o/miscellaneous/h5-general-system-icon/orders-5.png" width="20" height="20">
                 <p>Order</p>
             </a>

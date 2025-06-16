@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from products.models import Product
-from .models import CartItem
+from .models import CartItem, Cart
 
 @login_required
 def cart_detail(request):
@@ -9,10 +9,6 @@ def cart_detail(request):
     total_price = sum(item.product.price * item.quantity for item in items)
     return render(request, 'cart/cart_detail.html', {'cart_items': items, 'total_price': total_price})
 
-from django.shortcuts import get_object_or_404, redirect
-from .models import Cart, CartItem
-from products.models import Product
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def add_to_cart(request, product_id):
